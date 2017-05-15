@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Tile {
 
-    private int tileX, tileY, speedX, type;
+    private int tileX, tileY, speedX, offset;
     private Rectangle top, bot;
     public Image tileImage;
 
@@ -12,11 +12,29 @@ public class Tile {
     private Gorilla harambe = StartingClass.getHarambe();
     private Background bg = StartingClass.getBg1();
 
-    public Tile(int x, int y, int typeInt) {
-        tileX = x * 120;
-        tileY = y * 40;
+    public Tile(int x, int y, int offset) {
+        tileX = x + offset;
+        tileY = y;
 
-        type = typeInt;
+        top = new Rectangle();
+        bot = new Rectangle();
+        tileImage = StartingClass.tiletop;
+
+    }
+
+    public Tile(int x, int y, boolean isLast) {
+        tileX = x + offset;
+        tileY = y;
+
+        top = new Rectangle();
+        bot = new Rectangle();
+        tileImage = StartingClass.tiletop;
+
+    }
+
+    public Tile(Tile t) {
+        tileX = t.getTileX() + 120;
+        tileY = t.getTileY();
 
         top = new Rectangle();
         bot = new Rectangle();
