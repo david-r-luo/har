@@ -2,7 +2,7 @@ package game;
 
 import java.awt.*;
 
-public class Banana {
+public class Banana extends Item {
 
     private int x, y, speedX;
     private Rectangle hitbox;
@@ -15,6 +15,7 @@ public class Banana {
         this.x = x;
         this.y = y;
         hitbox = new Rectangle(0, 0, 0, 0);
+        bananaImage = StartingClass.bananaImg;
 
     }
 
@@ -26,7 +27,7 @@ public class Banana {
 
         if (hitbox.intersects(Gorilla.body)) {
             StartingClass.score += 50;
-            StartingClass.bananaArray.remove(this);
+            StartingClass.itemArray.remove(this);
             StartingClass.scoreStay = 20;
             StartingClass.scoreX = harambe.getCenterX();
             StartingClass.scoreY = harambe.getCenterY();
@@ -64,23 +65,23 @@ public class Banana {
 
 
 
-    public int getTileX() {
+    public int getX() {
         return x;
     }
 
-    public void setTileX(int tileX) {
+    public void setX(int tileX) {
         this.x = tileX;
     }
 
-    public int getTileY() {
+    public int getY() {
         return y;
     }
 
-    public void setTileY(int tileY) {
+    public void setY(int tileY) {
         this.y = tileY;
     }
 
-    public Image getTileImage() {
+    public Image getImage() {
         return bananaImage;
     }
 

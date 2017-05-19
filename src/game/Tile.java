@@ -33,8 +33,8 @@ public class Tile {
     }
 
     public Tile(Tile t) {
-        tileX = t.getTileX() + 120;
-        tileY = t.getTileY();
+        tileX = t.getX() + 120;
+        tileY = t.getY();
 
         top = new Rectangle();
         bot = new Rectangle();
@@ -98,19 +98,19 @@ public class Tile {
 //
 //    }
 
-    public int getTileX() {
+    public int getX() {
         return tileX;
     }
 
-    public void setTileX(int tileX) {
+    public void setX(int tileX) {
         this.tileX = tileX;
     }
 
-    public int getTileY() {
+    public int getY() {
         return tileY;
     }
 
-    public void setTileY(int tileY) {
+    public void setY(int tileY) {
         this.tileY = tileY;
     }
 

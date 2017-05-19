@@ -21,7 +21,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public int hiScore = 0;
     public static int tileTime;
     public static Tile last;
-    public static Tile mid;
+    public static Tile placeHolder;
 
     private static Gorilla harambe;
     public static int scoreX;
@@ -50,8 +50,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     public static Image tiletop, tiledirt;
     public static ArrayList<Tile> tileArray = new ArrayList<>();
-    public static ArrayList<Banana> bananaArray = new ArrayList<>();
-    public static ArrayList<Baby> babyArray = new ArrayList<>();
+    public static ArrayList<Item> itemArray = new ArrayList<>();
+//    public static ArrayList<Banana> bananaArray = new ArrayList<>();
+//    public static ArrayList<Baby> babyArray = new ArrayList<>();
 
     @Override
     public void init() {
@@ -132,64 +133,55 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
         globalSpeed = STARTSPEED;
         tileArray.clear();
-        bananaArray.clear();
-        babyArray.clear();
+//        bananaArray.clear();
+//        babyArray.clear();
+        itemArray.clear();
         score = 0;
         bg1 = new Background(0,0);
         bg2 = new Background(2693, 0);
         harambe = new Gorilla();
         ferns1 = new Background(0, 0);
         ferns2 = new Background(2693, 0);
-//        grass1 = new Background(0, 0);
-//        grass1.setSpeedX(globalSpeed*2);
-//        grass2 = new Background(2693, 0);
-//        grass2.setSpeedX(globalSpeed*2);
+        Tile placeHolder = new Tile(0, 160, 0);
+        renderTiles(placeHolder);
         ferns1.setSpeedX(globalSpeed - 2);
         ferns2.setSpeedX(globalSpeed - 2);
 
-//        linesss.add(new Line(0));
-//        linesss.add(new Line(120));
-//        linesss.add(new Line(240));
-//        linesss.add(new Line(360));
-//        linesss.add(new Line(480));
-//        linesss.add(new Line(600));
-//        linesss.add(new Line(720));
-//        linesss.add(new Line(840));
 
-        try {
-            loadMap("C:/Users/David/AppData/Local/Temp/data/testmap.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            loadMap("C:/Users/David/AppData/Local/Temp/data/testmap.txt");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         Thread thread = new Thread(this);
         thread.start();
     }
 
 
-    private void loadMap(String filename) throws IOException{
-
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
-
-        while (true) {
-            String line = reader.readLine();
-
-            if (line == null) {
-                reader.close();
-                break;
-            }
-
-            if (!line.startsWith("!")) {
+//    private void loadMap(String filename) throws IOException{
+//
+//        BufferedReader reader = new BufferedReader(new FileReader(filename));
+//
+//        while (true) {
+//            String line = reader.readLine();
+//
+//            if (line == null) {
+//                reader.close();
+//                break;
+//            }
+//
+//            if (!line.startsWith("!")) {
 //                tileLines.add(line);
-
-            }
-
-
-        }
-        Tile starter = new Tile(0, 160, 0);
-        renderTiles(starter);
-
-    }
+//
+//            }
+//
+//
+//        }
+//        Tile starter = new Tile(0, 160, 0);
+//        renderTiles(starter);
+//
+//    }
 
 
     @Override
@@ -247,18 +239,18 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                 }
 
                 waitInput = true;
+
 //                tileLineUp += (globalSpeed * 2);
 //                if (tileLineUp <= 0) {
 //                    tileLineUp += 120;
 //                }
                 System.out.println(time_passed);
 
-                if (time_passed >= 360 && globalSpeed > maxSpeed) {
-                    time_passed = 0;
+                if (time_passed >= 720 && globalSpeed > maxSpeed) {
+                    time_passed = 360;
                     globalSpeed -= 1;
                     updateBackgroundSpeed();
                     System.out.println("SPEED: " + globalSpeed);
-                    tileTime = 0;
                 }
 
 
@@ -269,17 +261,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
 //                mid = tileArray.get(tileArray.size() - 10);
 
-                if (last.getTileX() < 960) {
-                    System.out.println(tileTime);
+                if (last.getX() < 960) {
                     renderTiles(last);
                     last = tileArray.get(tileArray.size() - 1);
                 }
-
-//                if(lastTile != null && lastTile.getTileX() <= 1200 && lastTile.getTileX() > 800) {
-//                    renderTiles(2, 0);
-//                    System.out.println("render");
-//                    lastTile = null;
-//                }
 
                 if (upDown) {
                     harambe.jump();
@@ -299,7 +284,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             }
 
             time_passed += 1;
-            tileTime += 1;
             score += 1;
 
             renderCount -= globalSpeed;
@@ -314,8 +298,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
             updateTiles();
 
-            updateBananas();
-            updateBabies();
+//            updateBananas();
+//            updateBabies();
+            updateItems();
             if (scoreStay > 0) {
                 scoreStay -= 1;
             }
@@ -416,74 +401,97 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     public static void renderTiles(Tile starting) {
         renderCount = 0;
-        int curr10 = starting.getTileX();
-        int curr7 = starting.getTileX();
-        int curr4 = starting.getTileX();
+        int curr10 = starting.getX();
+        int curr7 = starting.getX();
+        int curr4 = starting.getX();
 
         for (int j = 4; j < 11; j+=3) {
             for (int i = 0; i < 20; i++) {
-                if (0 < currDif[0] && j == 10) {
-                    Tile t = new Tile(curr10 + 120, j*40, 0);
-                    tileArray.add(t);
-                    curr10 += 120;
-                    if (random.nextInt(100) > 60) {
-                        Banana b = new Banana(i*120 + 45, j*40 - 40);
-                        bananaArray.add(b);
-                    } else if (random.nextInt(100) > 95) {
-                        Baby bab;
-                        if (random.nextInt(100) > 50) {
-                            bab = new Baby(i*120 + 45, j*40 - 35, "grey");
-                        } else {
-                            bab = new Baby(i*120 + 45, j*40 - 35, "pink");
+                if (j == 10) {
+                    if (starting == placeHolder) {
+                        Tile t = new Tile(curr10 + 120, j * 40, 0);
+                        tileArray.add(t);
+                        if (i == 19 && last == null) {
+                            last = t;
                         }
-                        babyArray.add(bab);
+                    } else if (random.nextInt(100) < currDif[1]) {
+                        Tile t = new Tile(curr10 + 120, j * 40, 0);
+                        tileArray.add(t);
+                        if (i == 19 && last == null) {
+                            last = t;
+                        }
+                        int temp = random.nextInt(100);
+                        if (temp > 94) {
+                            Baby bab;
+                            if (temp > 97) {
+                                bab = new Baby(curr10 + 120 + 45, j*40 - 35, "grey");
+                            } else {
+                                bab = new Baby(curr10 + 120 + 45, j*40 - 35, "pink");
+                            }
+//                            babyArray.add(bab);
+                            itemArray.add(bab);
+                        }
                     }
 
-                    if (i == 10) {
-                        mid = t;
+                    if (random.nextInt(100) > 60) {
+                        Banana b = new Banana(curr10 + 120 + 45, j*40 - 40);
+//                        bananaArray.add(b);
+                        itemArray.add(b);
                     }
 
-                    if (i == 19 && last == null) {
-                        last = t;
-                    }
-                } else if (0 < currDif[1] && j == 7) {
+
+
+                    curr10 += 120;
+                } else if (j == 7) {
                     if (random.nextInt(100) < currDif[1]) {
                         Tile t = new Tile(curr7 + 120, j * 40, 0);
                         tileArray.add(t);
-                        if (random.nextInt(100) > 95) {
+                        if (i == 19 && last == null) {
+                            last = t;
+                        }
+                        int temp = random.nextInt(100);
+                        if (temp > 94) {
                             Baby bab;
-                            if (random.nextInt(100) > 50) {
+                            if (temp > 97) {
                                 bab = new Baby(curr7 + 120 + 45, j*40 - 35, "grey");
                             } else {
                                 bab = new Baby(curr7 + 120 + 45, j*40 - 35, "pink");
                             }
-                            babyArray.add(bab);
+//                            babyArray.add(bab);
+                            itemArray.add(bab);
                         }
                     }
 
                     if (random.nextInt(100) > 60) {
                         Banana b = new Banana(curr7 + 120 + 45, j*40 - 40);
-                        bananaArray.add(b);
+//                        bananaArray.add(b);
+                        itemArray.add(b);
                     }
                     curr7 += 120;
-                } else if (0 < currDif[2] && j == 4) {
+                } else if (j == 4) {
                     if (random.nextInt(100) < currDif[2]) {
                         Tile t = new Tile(curr4 + 120, j * 40, 0);
                         tileArray.add(t);
-                        if (random.nextInt(100) > 95) {
+                        if (i == 19 && last == null) {
+                            last = t;
+                        }
+                        int temp = random.nextInt(100);
+                        if (temp > 94) {
                             Baby bab;
-                            if (random.nextInt(100) > 50) {
-                                bab = new Baby(curr7 + 120 + 45, j*40 - 35, "grey");
+                            if (temp > 97) {
+                                bab = new Baby(curr4 + 120 + 45, j*40 - 35, "grey");
                             } else {
-                                bab = new Baby(curr7 + 120 + 45, j*40 - 35, "pink");
+                                bab = new Baby(curr4 + 120 + 45, j*40 - 35, "pink");
                             }
-                            babyArray.add(bab);
+//                            babyArray.add(bab);
+                            itemArray.add(bab);
                         }
                     }
 
                     if (random.nextInt(100) > 60) {
-                        Banana b = new Banana(curr7 + 120 + 45, j*40 - 40);
-                        bananaArray.add(b);
+                        Banana b = new Banana(curr4 + 120 + 45, j*40 - 40);
+//                        bananaArray.add(b);
+                        itemArray.add(b);
                     }
                     curr4 += 120;
                 }
@@ -514,26 +522,53 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         for (int i = 0; i < tileArray.size(); i++) {
 
             Tile t = tileArray.get(i);
-            if (t.getTileX() <= -160) {
+            if (t.getX() <= -160) {
                 tileArray.remove(t);
             } else {
                 t.update();
-                if (t == last && harambe.feet.intersects(t.getTop())) {
-                    System.out.println(tileTime);
-                }
             }
 
         }
     }
 
-    private void updateBananas() {
+//    private void updateBananas() {
+//
+//        for (int i = 0; i < bananaArray.size(); i++) {
+//
+//            Banana b = bananaArray.get(i);
+//
+//            if (b.getX() <= -160) {
+//                bananaArray.remove(b);
+//            } else {
+//                b.update();
+//            }
+//
+//        }
+//    }
+//
+//    private void updateBabies() {
+//
+//        for (int i = 0; i < babyArray.size(); i++) {
+//
+//            Baby b = babyArray.get(i);
+//
+//            if (b.getX() <= -160) {
+//                babyArray.remove(b);
+//            } else {
+//                b.update();
+//            }
+//
+//        }
+//    }
 
-        for (int i = 0; i < bananaArray.size(); i++) {
+    private void updateItems() {
 
-            Banana b = bananaArray.get(i);
+        for (int i = 0; i < itemArray.size(); i++) {
 
-            if (b.getTileX() <= -160) {
-                bananaArray.remove(b);
+            Item b = itemArray.get(i);
+
+            if (b.getX() <= -160) {
+                itemArray.remove(b);
             } else {
                 b.update();
             }
@@ -541,36 +576,32 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         }
     }
 
-    private void updateBabies() {
+//    private void paintBananas(Graphics g) {
+//        for (int i = 0; i < bananaArray.size(); i++) {
+//            Banana b = bananaArray.get(i);
+//            if ((b.getX() > -100) && (b.getX() < 1000)) {
+//                g.drawImage(bananaImg, b.getX(), b.getY(), this);
+//            }
+//
+//        }
+//    }
+//
+//    private void paintBabies(Graphics g) {
+//        for (int i = 0; i < babyArray.size(); i++) {
+//            Baby b = babyArray.get(i);
+//            if ((b.getX() > -100) && (b.getX() < 1000)) {
+//                g.drawImage(b.babyImage, b.getX(), b.getY(), this);
+//
+//            }
+//
+//        }
+//    }
 
-        for (int i = 0; i < babyArray.size(); i++) {
-
-            Baby b = babyArray.get(i);
-
-            if (b.getTileX() <= -160) {
-                babyArray.remove(b);
-            } else {
-                b.update();
-            }
-
-        }
-    }
-
-    private void paintBananas(Graphics g) {
-        for (int i = 0; i < bananaArray.size(); i++) {
-            Banana b = bananaArray.get(i);
-            if ((b.getTileX() > -100) && (b.getTileX() < 1000)) {
-                g.drawImage(bananaImg, b.getTileX(), b.getTileY(), this);
-            }
-
-        }
-    }
-
-    private void paintBabies(Graphics g) {
-        for (int i = 0; i < babyArray.size(); i++) {
-            Baby b = babyArray.get(i);
-            if ((b.getTileX() > -100) && (b.getTileX() < 1000)) {
-                g.drawImage(b.babyImage, b.getTileX(), b.getTileY(), this);
+    private void paintItems(Graphics g) {
+        for (int i = 0; i < itemArray.size(); i++) {
+            Item b = itemArray.get(i);
+            if ((b.getX() > -100) && (b.getX() < 1000)) {
+                g.drawImage(b.getImage(), b.getX(), b.getY(), this);
 
             }
 
@@ -580,8 +611,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     private void paintTiles(Graphics g) {
         for (int i = 0; i < tileArray.size(); i++) {
             Tile t = tileArray.get(i);
-            if ((t.getTileX() > -100) && (t.getTileX() < 1000)) {
-                g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
+            if ((t.getX() > -100) && (t.getX() < 1000)) {
+                g.drawImage(t.getTileImage(), t.getX(), t.getY(), this);
             }
 
         }
@@ -632,9 +663,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             paintBananaScore(g);
         }
 
+        paintItems(g);
 
-        paintBananas(g);
-        paintBabies(g);
+//        paintBananas(g);
+//        paintBabies(g);
 
         if (harambe.getDashCD() == 0) {
             g.drawImage(dashBlue, 10, 140, null);

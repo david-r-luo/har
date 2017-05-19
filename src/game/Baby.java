@@ -2,7 +2,7 @@ package game;
 
 import java.awt.*;
 
-public class Baby {
+public class Baby extends Item {
 
     private int x, y, speedX;
     private Rectangle hitbox;
@@ -37,7 +37,7 @@ public class Baby {
 //            StartingClass.updateBackgroundSpeed();
 //            StartingClass.updateTiles();
 //            StartingClass.renderTiles(Math.round(fractionTime + 10));
-            StartingClass.babyArray.remove(this);
+            StartingClass.itemArray.remove(this);
             if (!harambe.dashing) {
                 Gorilla.health -= 1;
                 System.out.println("LOSE LIFE");
@@ -73,23 +73,23 @@ public class Baby {
 
 
 
-    public int getTileX() {
+    public int getX() {
         return x;
     }
 
-    public void setTileX(int tileX) {
+    public void setX(int tileX) {
         this.x = tileX;
     }
 
-    public int getTileY() {
+    public int getY() {
         return y;
     }
 
-    public void setTileY(int tileY) {
+    public void setY(int tileY) {
         this.y = tileY;
     }
 
-    public Image getTileImage() {
+    public Image getImage() {
         return babyImage;
     }
 

@@ -78,6 +78,7 @@ public class Gorilla {
         if (centerY >= 600 || health <= 0) {
             System.out.println("GAME OVER MAN");
             gameOver = true;
+            StartingClass.last = null;
         }
 
     }
