@@ -4,12 +4,9 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 public class StartingClass extends Applet implements Runnable, KeyListener {
@@ -42,8 +39,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public static int renderCount = 2400;
     public static int scoreStay = 0;
 
-    public static HashMap<Integer, Integer> tileScroll = new HashMap<>();
-
     public static int score = 0;
     public static boolean upDown = false;
 
@@ -51,16 +46,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public static Image tiletop, tiledirt;
     public static ArrayList<Tile> tileArray = new ArrayList<>();
     public static ArrayList<Item> itemArray = new ArrayList<>();
-//    public static ArrayList<Banana> bananaArray = new ArrayList<>();
-//    public static ArrayList<Baby> babyArray = new ArrayList<>();
 
     @Override
     public void init() {
-        tileScroll.put(-4, 378);
-        tileScroll.put(-5, 284);
-        tileScroll.put(-6, 224);
-        tileScroll.put(-7, 179);
-        tileScroll.put(-8, 153);
         currDif = hard;
         if (currDif[0] == 70) {
             maxSpeed = -7;
@@ -83,6 +71,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             throw new NullPointerException();
         }
 
+
         // Image Setups
         har1 = getImage(base, "data/har1.png");
         har2 = getImage(base, "data/har2.png");
@@ -100,8 +89,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         dashBlue = getImage(base, "data/dashblue.png");
         dashGrey = getImage(base, "data/dashgrey.png");
 
-//        keeper1img = getImage(base, "data/keeper2.png");
-//        keeper2img = getImage(base, "data/keeper2.png");
         background = getImage(base, "data/stolen2.png");
         grass = getImage(base, "data/grass.png");
 
@@ -127,14 +114,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public void start() {
         Gorilla.health = 4;
         time_passed = 0;
-//        tileLineUp = 120;
-
-
-
         globalSpeed = STARTSPEED;
         tileArray.clear();
-//        bananaArray.clear();
-//        babyArray.clear();
         itemArray.clear();
         score = 0;
         bg1 = new Background(0,0);
@@ -147,41 +128,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         ferns1.setSpeedX(globalSpeed - 2);
         ferns2.setSpeedX(globalSpeed - 2);
 
-
-//        try {
-//            loadMap("C:/Users/David/AppData/Local/Temp/data/testmap.txt");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         Thread thread = new Thread(this);
         thread.start();
     }
 
-
-//    private void loadMap(String filename) throws IOException{
-//
-//        BufferedReader reader = new BufferedReader(new FileReader(filename));
-//
-//        while (true) {
-//            String line = reader.readLine();
-//
-//            if (line == null) {
-//                reader.close();
-//                break;
-//            }
-//
-//            if (!line.startsWith("!")) {
-//                tileLines.add(line);
-//
-//            }
-//
-//
-//        }
-//        Tile starter = new Tile(0, 160, 0);
-//        renderTiles(starter);
-//
-//    }
 
 
     @Override
@@ -240,12 +190,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
                 waitInput = true;
 
-//                tileLineUp += (globalSpeed * 2);
-//                if (tileLineUp <= 0) {
-//                    tileLineUp += 120;
-//                }
-                System.out.println(time_passed);
-
                 if (time_passed >= 720 && globalSpeed > maxSpeed) {
                     time_passed = 360;
                     globalSpeed -= 1;
@@ -253,13 +197,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                     System.out.println("SPEED: " + globalSpeed);
                 }
 
-
-//                if (time_passed % tileScroll.get(globalSpeed) == 0) {
-//                    renderTiles(last);
-//                    System.out.println(tileTime);
-//                }
-
-//                mid = tileArray.get(tileArray.size() - 10);
 
                 if (last.getX() < 960) {
                     renderTiles(last);
@@ -293,13 +230,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             bg2.update();
             ferns1.update();
             ferns2.update();
-//            grass1.update();
-//            grass2.update();
-
             updateTiles();
-
-//            updateBananas();
-//            updateBabies();
             updateItems();
             if (scoreStay > 0) {
                 scoreStay -= 1;
@@ -327,78 +258,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     }
 
-//    public static void renderTiles(int startIndex, int offset) {
-//        renderCount = 0;
-//        for (int j = 4; j < 11; j+=3) {
-////            String line = tileLines.get(j);
-//            for (int i = startIndex; i < startIndex + 20; i++) {
-//                if (true) {
-////                    if (i < 10 && j == 10) {
-////                        Tile t = new Tile(i, j, offset);
-////                        tileArray.add(t);
-////                    }
-//                    int tile1 = random.nextInt(100);
-//                    int tile2 = random.nextInt(100);
-//                    int tile3 = random.nextInt(100);
-//
-//                    if (0 < currDif[0] && j == 10) {
-//                        Tile t = new Tile(i*120, j*40, offset);
-//                        tileArray.add(t);
-//                        if (random.nextInt(100) > 60) {
-//                            Banana b = new Banana(i*120 + 45 + offset, j*40 - 40);
-//                            bananaArray.add(b);
-//                        } else if (random.nextInt(100) > 95) {
-//                            Baby bab;
-//                            if (random.nextInt(100) > 50) {
-//                                bab = new Baby(i*120 + 45 + offset, j*40 - 35, "grey");
-//                            } else {
-//                                bab = new Baby(i*120 + 45 + offset, j*40 - 35, "pink");
-//                            }
-//                            babyArray.add(bab);
-//                        }
-//                    } if (0 < currDif[1] && j == 7) {
-//                        Tile t = new Tile(i*120, j*40, offset);
-//                        tileArray.add(t);
-//                        if (i == startIndex) {
-//                            first = t;
-//                        }
-//
-//                        if (i == startIndex + 19) {
-//                            last = t;
-//                        }
-//                        if (random.nextInt(100) > 60) {
-//                            Banana b = new Banana(i*120 + 45 + offset, j*40 - 40);
-//                            bananaArray.add(b);
-//                        } else if (random.nextInt(100) > 95) {
-//                            Baby bab;
-//                            if (random.nextInt(100) > 50) {
-//                                bab = new Baby(i*120 + 45 + offset, j*40 - 35, "grey");
-//                            } else {
-//                                bab = new Baby(i*120 + 45 + offset, j*40 - 35, "pink");
-//                            }
-//                            babyArray.add(bab);
-//                        }
-//                    } if (0 < currDif[2] && j == 4) {
-//                        Tile t = new Tile(i*120, j*40, offset);
-//                        tileArray.add(t);
-//                        if (random.nextInt(100) > 60) {
-//                            Banana b = new Banana(i*120 + 45 + offset, j*40 - 40);
-//                            bananaArray.add(b);
-//                        } else if (random.nextInt(100) > 95) {
-//                            Baby bab;
-//                            if (random.nextInt(100) > 50) {
-//                                bab = new Baby(i*120 + 45 + offset, j*40 - 35, "grey");
-//                            } else {
-//                                bab = new Baby(i*120 + 45 + offset, j*40 - 35, "pink");
-//                            }
-//                            babyArray.add(bab);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     public static void renderTiles(Tile starting) {
         renderCount = 0;
         int curr10 = starting.getX();
@@ -411,13 +270,13 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                     if (starting == placeHolder) {
                         Tile t = new Tile(curr10 + 120, j * 40, 0);
                         tileArray.add(t);
-                        if (i == 19 && last == null) {
+                        if (i == 19 || last == null) {
                             last = t;
                         }
                     } else if (random.nextInt(100) < currDif[1]) {
                         Tile t = new Tile(curr10 + 120, j * 40, 0);
                         tileArray.add(t);
-                        if (i == 19 && last == null) {
+                        if (i == 19 || last == null) {
                             last = t;
                         }
                         int temp = random.nextInt(100);
@@ -518,7 +377,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     public static void updateTiles() {
 
-//        harambe.onGround = false;
         for (int i = 0; i < tileArray.size(); i++) {
 
             Tile t = tileArray.get(i);
@@ -530,36 +388,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
         }
     }
-
-//    private void updateBananas() {
-//
-//        for (int i = 0; i < bananaArray.size(); i++) {
-//
-//            Banana b = bananaArray.get(i);
-//
-//            if (b.getX() <= -160) {
-//                bananaArray.remove(b);
-//            } else {
-//                b.update();
-//            }
-//
-//        }
-//    }
-//
-//    private void updateBabies() {
-//
-//        for (int i = 0; i < babyArray.size(); i++) {
-//
-//            Baby b = babyArray.get(i);
-//
-//            if (b.getX() <= -160) {
-//                babyArray.remove(b);
-//            } else {
-//                b.update();
-//            }
-//
-//        }
-//    }
 
     private void updateItems() {
 
@@ -575,27 +403,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
         }
     }
-
-//    private void paintBananas(Graphics g) {
-//        for (int i = 0; i < bananaArray.size(); i++) {
-//            Banana b = bananaArray.get(i);
-//            if ((b.getX() > -100) && (b.getX() < 1000)) {
-//                g.drawImage(bananaImg, b.getX(), b.getY(), this);
-//            }
-//
-//        }
-//    }
-//
-//    private void paintBabies(Graphics g) {
-//        for (int i = 0; i < babyArray.size(); i++) {
-//            Baby b = babyArray.get(i);
-//            if ((b.getX() > -100) && (b.getX() < 1000)) {
-//                g.drawImage(b.babyImage, b.getX(), b.getY(), this);
-//
-//            }
-//
-//        }
-//    }
 
     private void paintItems(Graphics g) {
         for (int i = 0; i < itemArray.size(); i++) {
@@ -618,15 +425,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         }
     }
 
-//    public void paintLines(Graphics g) {
-//        for (int i = 0; i < linesss.size(); i++) {
-//            if (linesss.get(i).x == 0) {
-//                linesss.get(i).x += 840;
-//            }
-//            g.drawLine(linesss.get(i).x, 0, linesss.get(i).x, 500);
-//        }
-//    }
-
 
     private void paintBananaScore(Graphics g) {
         g.drawString("+50", scoreX, scoreY - 20);
@@ -636,8 +434,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public void paint(Graphics g) {
         g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
         g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
-//        g.drawImage(ferns, ferns1.getBgX(), ferns1.getBgY(), this);
-//        g.drawImage(ferns, ferns2.getBgX(), ferns2.getBgY(), this);
 
         paintTiles(g);
 
@@ -665,9 +461,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
         paintItems(g);
 
-//        paintBananas(g);
-//        paintBabies(g);
-
         if (harambe.getDashCD() == 0) {
             g.drawImage(dashBlue, 10, 140, null);
         } else {
@@ -687,13 +480,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             g.drawString("Press any key to continue", 290, 300);
             g.drawImage(hearts0, 10, 80, null);
         }
-
-//        paintLines(g);
-
-
-
-//        g.drawImage(grass, grass1.getBgX(), grass1.getBgY(), this);
-//        g.drawImage(grass, grass2.getBgX(), grass2.getBgY(), this);
     }
 
     public void animate() {
@@ -759,16 +545,12 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                 break;
 
             case KeyEvent.VK_DOWN:
-//			currentSprite = character;
-//			harambe.setDucked(false);
                 break;
 
             case KeyEvent.VK_LEFT:
-//			harambe.stopLeft();
                 break;
 
             case KeyEvent.VK_RIGHT:
-//			harambe.stopRight();
                 break;
 
             case KeyEvent.VK_SPACE:
@@ -787,10 +569,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         return bg1;
     }
 
-    public static Background getBg2() {
-        return bg2;
-    }
-
     public static Gorilla getHarambe() {
         return harambe;
     }
@@ -799,9 +577,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         return ferns1;
     }
 
-    public static Background getFerns2() {
-        return ferns2;
-    }
 
 
 
