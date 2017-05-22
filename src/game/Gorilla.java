@@ -8,7 +8,7 @@ public class Gorilla {
     final int JUMPSPEED = -15;
 
     private int centerX = 150;
-    private int centerY = 400;
+    private int centerY = 0;
     private int dashCD = 0;
     public static int health = 4;
     private boolean inAir = false;

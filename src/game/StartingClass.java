@@ -19,6 +19,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public static int tileTime;
     public static Tile last;
     public static Tile placeHolder;
+    public static int starterCount = 0;
 
     private static Gorilla harambe;
     public static int scoreX;
@@ -36,7 +37,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     private int[] medium = {60, 45, 45};
     private int[] hard = {50, 40, 40};
     private static int[] currDif;
-    public static int renderCount = 2400;
+//    public static int renderCount = 2400;
     public static int scoreStay = 0;
 
     public static int score = 0;
@@ -118,6 +119,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         tileArray.clear();
         itemArray.clear();
         score = 0;
+        starterCount = 0;
         bg1 = new Background(0,0);
         bg2 = new Background(2693, 0);
         harambe = new Gorilla();
@@ -223,7 +225,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             time_passed += 1;
             score += 1;
 
-            renderCount -= globalSpeed;
+//            renderCount -= globalSpeed;
 
             harambe.update();
             bg1.update();
@@ -259,24 +261,27 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     }
 
     public static void renderTiles(Tile starting) {
-        renderCount = 0;
+//        renderCount = 0;
         int curr10 = starting.getX();
         int curr7 = starting.getX();
         int curr4 = starting.getX();
 
+        last = starting;
+
         for (int j = 4; j < 11; j+=3) {
             for (int i = 0; i < 20; i++) {
                 if (j == 10) {
-                    if (starting == placeHolder) {
+                    if (starterCount < 5) {
                         Tile t = new Tile(curr10 + 120, j * 40, 0);
                         tileArray.add(t);
-                        if (i == 19 || last == null) {
+                        if (t.getX() > last.getX()) {
                             last = t;
                         }
+                        starterCount += 1;
                     } else if (random.nextInt(100) < currDif[1]) {
                         Tile t = new Tile(curr10 + 120, j * 40, 0);
                         tileArray.add(t);
-                        if (i == 19 || last == null) {
+                        if (t.getX() > last.getX()) {
                             last = t;
                         }
                         int temp = random.nextInt(100);
@@ -305,7 +310,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                     if (random.nextInt(100) < currDif[1]) {
                         Tile t = new Tile(curr7 + 120, j * 40, 0);
                         tileArray.add(t);
-                        if (i == 19 && last == null) {
+                        if (t.getX() > last.getX()) {
                             last = t;
                         }
                         int temp = random.nextInt(100);
@@ -331,7 +336,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                     if (random.nextInt(100) < currDif[2]) {
                         Tile t = new Tile(curr4 + 120, j * 40, 0);
                         tileArray.add(t);
-                        if (i == 19 && last == null) {
+                        if (t.getX() > last.getX()) {
                             last = t;
                         }
                         int temp = random.nextInt(100);
