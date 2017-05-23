@@ -30,13 +30,11 @@ public class Baby extends Item {
         hitbox.setBounds(x, y, 40, 40);
 
         if (hitbox.intersects(harambe.body)) {
-//            int fractionTime = StartingClass.tileTime / StartingClass.tileScroll.get(StartingClass.globalSpeed);
-//            StartingClass.tileTime = Math.round(fractionTime * StartingClass.tileScroll.get(StartingClass.globalSpeed - 1));
-//            StartingClass.time_passed = 0;
 //            StartingClass.globalSpeed += 1;
 //            StartingClass.updateBackgroundSpeed();
 //            StartingClass.updateTiles();
-//            StartingClass.renderTiles(Math.round(fractionTime + 10));
+
+
             StartingClass.itemArray.remove(this);
             if (!harambe.dashing) {
                 Gorilla.health -= 1;
@@ -45,32 +43,6 @@ public class Baby extends Item {
 
         }
     }
-
-//    public void collisionCurr() {
-//        if (top.intersects(Gorilla.feet) && type != 0) {
-//            harambe.onGround = true;
-//            System.out.println("ay");
-//        } else {
-//            harambe.currTouch = false;
-//            System.out.println(harambe.currTouch);
-//        }
-//    }
-
-
-
-
-
-//    public void headBotCollision(Rectangle rect) {
-//        harambe.setSpeedY(3);
-//    }
-
-//    public void checkVerticalCollision(Rectangle rbot){
-//        if (rbot.intersects(top) && type == 8) {
-//            harambe.setJumped(false);
-//            harambe.setSpeedY(0);
-//        }
-//    }
-
 
 
     public int getX() {

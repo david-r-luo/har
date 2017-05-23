@@ -34,35 +34,6 @@ public class Banana extends Item {
         }
     }
 
-//    public void collisionCurr() {
-//        if (top.intersects(Gorilla.feet) && type != 0) {
-//            harambe.onGround = true;
-//            System.out.println("ay");
-//        } else {
-//            harambe.currTouch = false;
-//            System.out.println(harambe.currTouch);
-//        }
-//    }
-
-
-
-    public void feetTopCollision(Rectangle rect) {
-
-        StartingClass.score += 200;
-
-    }
-
-//    public void headBotCollision(Rectangle rect) {
-//        harambe.setSpeedY(3);
-//    }
-
-//    public void checkVerticalCollision(Rectangle rbot){
-//        if (rbot.intersects(top) && type == 8) {
-//            harambe.setJumped(false);
-//            harambe.setSpeedY(0);
-//        }
-//    }
-
 
 
     public int getX() {
@@ -85,15 +56,4 @@ public class Banana extends Item {
         return bananaImage;
     }
 
-    public void setTileImage(Image tileImage) {
-        this.bananaImage = tileImage;
-    }
-
-    public Rectangle getBox() {
-        return hitbox;
-    }
-
-    public void setBox(Rectangle box) {
-        this.hitbox = box;
-    }
 }

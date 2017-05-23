@@ -7,7 +7,7 @@ public class Gorilla {
     // Constants are Here
     final int JUMPSPEED = -15;
 
-    private int centerX = 150;
+    private int centerX = 250;
     private int centerY = 0;
     private int dashCD = 0;
     public static int health = 4;
@@ -40,7 +40,7 @@ public class Gorilla {
 
         centerY += speedY;
         centerX += speedX;
-        if (centerX > 150) {
+        if (centerX > 250) {
             centerX -= 1;
         }
         if (speedX == 0 && dashing) {
@@ -76,7 +76,6 @@ public class Gorilla {
 
 
         if (centerY >= 600 || health <= 0) {
-            System.out.println("GAME OVER MAN");
             gameOver = true;
             StartingClass.last = null;
         }

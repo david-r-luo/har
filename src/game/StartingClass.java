@@ -4,7 +4,6 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,8 +17,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public int hiScore = 0;
     public static int tileTime;
     public static Tile last;
-    public static Tile placeHolder;
     public static int starterCount = 0;
+    public static int babyStart1 = 0;
+    public static int babyStart2 = 0;
 
     private static Gorilla harambe;
     public static int scoreX;
@@ -50,7 +50,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     @Override
     public void init() {
-        currDif = hard;
+        currDif = easy;
         if (currDif[0] == 70) {
             maxSpeed = -7;
         } else if (currDif[0] == 60) {
@@ -60,43 +60,44 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         }
         random = new Random();
 
-        setSize(1960, 540);
+        setSize(1080, 540);
         setBackground(Color.BLACK);
         setFocusable(true);
         addKeyListener(this);
         Frame frame = (Frame) this.getParent().getParent();
         frame.setTitle("HaRUN!be");
         try {
-            base = getDocumentBase();
+            base = this.getClass().getResource("/resources/banana.png");
         } catch (Exception e) {
             throw new NullPointerException();
         }
 
 
         // Image Setups
-        har1 = getImage(base, "data/har1.png");
-        har2 = getImage(base, "data/har2.png");
-        har3 = getImage(base, "data/har3.png");
-        har4 = getImage(base, "data/har4.png");
-        har5 = getImage(base, "data/har5.png");
-        har6 = getImage(base, "data/har6.png");
-        characterJumped = getImage(base, "data/jumped.png");
-        dashHar = getImage(base, "data/dash.png");
-        hearts4 = getImage(base, "data/heart4.png");
-        hearts3 = getImage(base, "data/heart3.png");
-        hearts2 = getImage(base, "data/heart2.png");
-        hearts1 = getImage(base, "data/heart1.png");
-        hearts0 = getImage(base, "data/heart0.png");
-        dashBlue = getImage(base, "data/dashblue.png");
-        dashGrey = getImage(base, "data/dashgrey.png");
 
-        background = getImage(base, "data/stolen2.png");
-        grass = getImage(base, "data/grass.png");
+        har1 = getImage(base, "har1.png");
+        har2 = getImage(base, "har2.png");
+        har3 = getImage(base, "har3.png");
+        har4 = getImage(base, "har4.png");
+        har5 = getImage(base, "har5.png");
+        har6 = getImage(base, "har6.png");
+        characterJumped = getImage(base, "jumped.png");
+        dashHar = getImage(base, "dash.png");
+        hearts4 = getImage(base, "heart4.png");
+        hearts3 = getImage(base, "heart3.png");
+        hearts2 = getImage(base, "heart2.png");
+        hearts1 = getImage(base, "heart1.png");
+        hearts0 = getImage(base, "heart0.png");
+        dashBlue = getImage(base, "dashb.png");
+        dashGrey = getImage(base, "dashg.png");
 
-        tiledirt = getImage(base, "data/tiledirt.png");
-        bananaImg = getImage(base, "data/banana.png");
-        pinkBabyImg = getImage(base, "data/pinkbaby.png");
-        greyBabyImg = getImage(base, "data/greybaby.png");
+        background = getImage(base, "stolen2.png");
+        grass = getImage(base, "grass.png");
+
+        tiledirt = getImage(base, "tiledirt.png");
+        bananaImg = getImage(base, "banana.png");
+        pinkBabyImg = getImage(base, "pinkbaby.png");
+        greyBabyImg = getImage(base, "greybaby.png");
 
         anim = new Animation();
         anim.addFrame(har1, 250);
@@ -108,7 +109,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
         currentSprite = anim.getImage();
 
-        tiletop = getImage(base, "data/tiletopnew.png");
+        tiletop = getImage(base, "tiletopnew.png");
     }
 
     @Override
@@ -186,14 +187,14 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                     currHeart = hearts1;
                 } else if (harambe.getHealth() <= 0) {
                     currHeart = hearts0;
-                    currentSprite = hearts2;
+//                    currentSprite = hearts2;
                     harambe.gameOver = true;
                 }
 
                 waitInput = true;
 
                 if (time_passed >= 720 && globalSpeed > maxSpeed) {
-                    time_passed = 360;
+                    time_passed = 0;
                     globalSpeed -= 1;
                     updateBackgroundSpeed();
                     System.out.println("SPEED: " + globalSpeed);
@@ -241,7 +242,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
             if (harambe.gameOver) {
                 if (score > hiScore) {
-                    hiScore = score - 1;
+                    hiScore = score;
                 }
                 restart();
                 start();
@@ -285,23 +286,25 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                             last = t;
                         }
                         int temp = random.nextInt(100);
-                        if (temp > 94) {
+                        if (temp > 6) {
+                            Banana b = new Banana(curr10 + 120 + 45, j*40 - 40);
+                            itemArray.add(b);
+                        } else {
                             Baby bab;
-                            if (temp > 97) {
+                            if (temp > 3) {
                                 bab = new Baby(curr10 + 120 + 45, j*40 - 35, "grey");
                             } else {
                                 bab = new Baby(curr10 + 120 + 45, j*40 - 35, "pink");
                             }
-//                            babyArray.add(bab);
                             itemArray.add(bab);
+
                         }
                     }
 
-                    if (random.nextInt(100) > 60) {
-                        Banana b = new Banana(curr10 + 120 + 45, j*40 - 40);
-//                        bananaArray.add(b);
-                        itemArray.add(b);
-                    }
+//                    if (random.nextInt(100) > 60) {
+//                        Banana b = new Banana(curr10 + 120 + 45, j*40 - 40);
+//                        itemArray.add(b);
+//                    }
 
 
 
@@ -314,23 +317,27 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                             last = t;
                         }
                         int temp = random.nextInt(100);
-                        if (temp > 94) {
+                        if (temp > 6) {
+                            Banana b = new Banana(curr7 + 120 + 45, j*40 - 40);
+                            itemArray.add(b);
+                        } else if (babyStart1 > 10){
                             Baby bab;
-                            if (temp > 97) {
+                            if (temp > 3) {
                                 bab = new Baby(curr7 + 120 + 45, j*40 - 35, "grey");
                             } else {
                                 bab = new Baby(curr7 + 120 + 45, j*40 - 35, "pink");
                             }
-//                            babyArray.add(bab);
                             itemArray.add(bab);
+
+                        } else {
+                            babyStart1 += 1;
                         }
                     }
-
-                    if (random.nextInt(100) > 60) {
-                        Banana b = new Banana(curr7 + 120 + 45, j*40 - 40);
-//                        bananaArray.add(b);
-                        itemArray.add(b);
-                    }
+//
+//                    if (random.nextInt(100) > 60) {
+//                        Banana b = new Banana(curr7 + 120 + 45, j*40 - 40);
+//                        itemArray.add(b);
+//                    }
                     curr7 += 120;
                 } else if (j == 4) {
                     if (random.nextInt(100) < currDif[2]) {
@@ -340,23 +347,27 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                             last = t;
                         }
                         int temp = random.nextInt(100);
-                        if (temp > 94) {
+                        if (temp > 6) {
+                            Banana b = new Banana(curr4 + 120 + 45, j*40 - 40);
+                            itemArray.add(b);
+                        } else if (babyStart2 > 10){
                             Baby bab;
-                            if (temp > 97) {
+                            if (temp > 3) {
                                 bab = new Baby(curr4 + 120 + 45, j*40 - 35, "grey");
                             } else {
                                 bab = new Baby(curr4 + 120 + 45, j*40 - 35, "pink");
                             }
-//                            babyArray.add(bab);
                             itemArray.add(bab);
+
+                        } else {
+                            babyStart2 += 1;
                         }
                     }
-
-                    if (random.nextInt(100) > 60) {
-                        Banana b = new Banana(curr4 + 120 + 45, j*40 - 40);
-//                        bananaArray.add(b);
-                        itemArray.add(b);
-                    }
+//
+//                    if (random.nextInt(100) > 60) {
+//                        Banana b = new Banana(curr4 + 120 + 45, j*40 - 40);
+//                        itemArray.add(b);
+//                    }
                     curr4 += 120;
                 }
             }
@@ -423,7 +434,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     private void paintTiles(Graphics g) {
         for (int i = 0; i < tileArray.size(); i++) {
             Tile t = tileArray.get(i);
-            if ((t.getX() > -100) && (t.getX() < 1000)) {
+            if ((t.getX() > -100) && (t.getX() < 1100)) {
                 g.drawImage(t.getTileImage(), t.getX(), t.getY(), this);
             }
 
@@ -467,15 +478,15 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         paintItems(g);
 
         if (harambe.getDashCD() == 0) {
-            g.drawImage(dashBlue, 10, 140, null);
+            g.drawImage(dashBlue, 20, 130, null);
         } else {
-            g.drawImage(dashGrey, 10, 140, null);
+            g.drawImage(dashGrey, 20, 130, null);
         }
 
 
 
         g.setColor(Color.BLACK);
-        g.drawImage(currHeart, 10, 80, null);
+
 
 
         if (harambe.gameOver) {
@@ -483,8 +494,12 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             g.drawString("GAME OVER", 300, 250);
             g.setFont(new Font("AR Julian", Font.ITALIC, 30));
             g.drawString("Press any key to continue", 290, 300);
-            g.drawImage(hearts0, 10, 80, null);
+            g.drawImage(hearts0, 20, 80, null);
+        } else {
+            g.drawImage(currHeart, 20, 80, null);
         }
+
+        g.drawImage(null, 90, 80, null);
     }
 
     public void animate() {
