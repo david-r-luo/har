@@ -68,6 +68,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         frame.setTitle("HaRUN!be");
         try {
             base = this.getClass().getResource("/resources/banana.png");
+            System.out.println(base);
         } catch (Exception e) {
             throw new NullPointerException();
         }
@@ -498,8 +499,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         } else {
             g.drawImage(currHeart, 20, 80, null);
         }
-
-        g.drawImage(null, 90, 80, null);
     }
 
     public void animate() {
